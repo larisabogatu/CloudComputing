@@ -1,27 +1,116 @@
-# TripForecast
+# Introducere
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.12.
+API reprezinta acronimul in limba engleza pentru Application Programming Interface, adica interfata de programare a unei aplicatii. O librarie API poate fi privita ca un set de functii puse la dispozitia programatorilor in sensul efectuarii unor anumite operatiuni sau sarcini. De exemplu, exista API-uri ce permit programatorilor sa introduca in aplicatiile pe care le dezvolta facilitati de recunoastere faciala. Programatorul respectiv nu trebuie sa cunoasca in detaliu mecanismele ce stau in spatele recunoasterii faciale. El trebuie doar sa stie cum sa utilizeze corect functiile puse la dispozitie prin API-ul respectiv. Un API este o colectie de functii continute in librarii statice sau dinamice, ce pot fi folosite la un moment dat intr-o aplicatie pentru a efectua diverse sarcini.
 
-## Development server
+Proiectul curent a fost realizat prin [Angular CLI](https://github.com/angular/angular-cli) versiunea 11.2.12.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# Descriere problema
 
-## Code scaffolding
+Aplicatia curenta are ca scop prezentarea calitatii aerului din imprejurimile aeroporturilor, precum si observarea aeroporturilor cu un grad ridicat de poluare. Calitatea aerului este direct influentata de factorii poluanti din zona in care aceasta se masoara, prin urmare, aplicatie curent are ca scop observarea celor mai poluate aeroporturi.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# Descriere API-uri folosite 
+## Descriere API Airport info
 
-## Build
+Primul API folosit genereaza informatii referitoare la aeroporturi, oferind acces la cea mai complexa baza de date care contine date precum adresa, numar de telefon, website etc.
+Datele mentionate se obtin prin intermediul codurilor IATA si ICAO. Codurile ICAO sunt folosite in controlul traficului aerian si in operarile liniilor aeriene, cum ar fi planificarea zborurilor. Codurile IATA sunt folosite de catre companiile aeriene in orarele zborurilor, rezervari si operatiile legate de bagaje. 
+Datele intoarse prin intermediul acestui API pot fi observate in exemplul de mai jos.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Decriere API Air Quality
 
-## Running unit tests
+Cel de-al doilea API returneaza informatii privind calitatea aerului dintr-o anumita locatie prin pasarea coordonatelor locatiei de interes. In aplicatia noastra, aceste date sunt returnate prin apelarea primului API si folosite mai departe in apelarea celui de-al doilea API al carui exemplu de raspuns poate fi regasit mai jus in cadrul documentatiei.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# Flux de date
 
-## Running end-to-end tests
+## Exemple Request/ Response
+#### Request API Air info
+const request = require('request');
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+const options = {
+  method: 'GET',
+  url: 'https://airport-info.p.rapidapi.com/airport',
+  qs: {icao: 'LROP', iata: 'OTP'},
+  headers: {
+    'x-rapidapi-key': 'e5f604f9d8mshc83eaff98f9edf6p17343fjsn9b08384ae1d9',
+    'x-rapidapi-host': 'airport-info.p.rapidapi.com',
+    useQueryString: true
+  }
+};
 
-## Further help
+request(options, function (error, response, body) {
+	if (error) throw new Error(error);
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+	console.log(body);
+});
+
+#### Response API Air info
+{18 items
+"id":5702
+"iata":"OTP"
+"icao":"LROP"
+"name":"Henri Coandă International Airport"
+"location":"Bucharest, Romania"
+"street_number":"224E"
+"street":"Calea Bucureştilor"
+"city":"Otopeni"
+"county":""
+"state":"Județul Ilfov"
+"country_iso":"RO"
+"country":"Romania"
+"postal_code":"75150"
+"phone":"+40 21 204 1000"
+"latitude":44.570732
+"longitude":26.084412
+"uct":180
+"website":"http://www.bucharestairports.ro/otp"
+}
+
+#### Request API Air Quality
+const request = require('request');
+
+const options = {
+  method: 'GET',
+  url: 'https://air-quality.p.rapidapi.com/history/airquality',
+  qs: {lon: '-78.638', lat: '35.779'},
+  headers: {
+    'x-rapidapi-key': 'e5f604f9d8mshc83eaff98f9edf6p17343fjsn9b08384ae1d9',
+    'x-rapidapi-host': 'air-quality.p.rapidapi.com',
+    useQueryString: true
+  }
+};
+
+request(options, function (error, response, body) {
+	if (error) throw new Error(error);
+
+	console.log(body);
+});
+
+#### Response API Air Quality
+{
+"data":[
+0:{
+"aqi":52.4
+"pm10":16.4616
+"pm25":9.1418
+"o3":105.979
+"timestamp_local":"2021-05-08T15:00:00"
+"so2":1.78441
+"no2":3.40416
+"timestamp_utc":"2021-05-08T19:00:00"
+"datetime":"2021-05-08:19"
+"co":237.744
+"ts":1620500400
+}
+]
+"city_name":"Raleigh"
+"lon":-78.64
+"timezone":"America/New_York"
+"lat":35.78
+"country_code":"US"
+"state_code":"NC"
+}
+## Metode HTTP
+Metoda HTTP folosita in cadrul aplicatiei este HTTP REST GET.
+
+## Link accesare aplicatie
+http://trip-forecast.s3-website.eu-central-1.amazonaws.com/
+
