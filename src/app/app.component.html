@@ -1,0 +1,70 @@
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <style>
+    h1 {text-align: center;}
+    p {text-align: center;}
+    div {text-align: center;}
+    button {text-align: center; }
+    </style>
+</head>
+
+<body >
+  <h1>Trip-Forecast</h1>
+<!-- <div class="cart-item" *ngFor="let item of items">
+  <span>{{ item.name }} </span>
+  <span>{{ item.price | currency }}</span>
+</div> -->
+
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+
+  <!-- <div>
+    <label for="name">
+      Name
+    </label>
+    <input id="name" type="text" formControlName="name">
+  </div>
+
+  <div>
+    <label for="address">
+      Address
+    </label>
+    <input id="address" type="text" formControlName="address">
+  </div> -->
+
+  <div>
+    <label for="address">
+      Airport: 
+    </label>
+    <select name="demo" id="airportNames" formControlName="airportNames">
+      <option selected="selected" value="OTP,LROP">Otopeni</option>
+      <option value="DXB,OMDB">Dubai</option>
+      <option value="NCE,LFMN">Nice</option>
+      <option value="AMS,EHAM">Amsterdam</option>
+      <option value="IST,LTFM">Istanbul</option>
+
+    </select>
+  </div>
+
+  <button class="button" type="submit">Search</button>
+
+  <div id="infoDiv" style="margin-top: 10%;" *ngIf="isVisible">
+    <h3>Airport Details (Contact)</h3>
+    <div>Location: {{location}}</div>
+    <div>Name: {{airportName}}</div>
+    <div>Website: {{website}}</div>
+    <div>Address: {{address}}</div>
+    <div>Phone: {{phone}}</div>
+    <h3>Air Quality</h3>
+    <div>Aqi: {{aqi}}</div>
+    <div>Pm10: {{pm10}}</div>
+    <div>Pm25: {{pm25}}</div>
+    <div>O3: {{o3}}</div>
+    <div>SO2: {{so2}}</div>
+    <div>CO: {{co}}</div>
+
+  </div>
+  
+  
+</form>
+</body>
